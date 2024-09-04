@@ -20,6 +20,22 @@ NLP-based-DBMS aims to simplify database interactions by allowing users to commu
 - Security: Implements robust security measures to protect data integrity and privacy.
 
 #### Usage Instructions:
+Open a terminal instance inside the working directory and install all the requirements as:
+```bash
+ pip install-r "requirements.txt" 
+```
+Note: You must have pip preinstalled.
+
+To run the application:
+```bash
+python application.py
+```
+Or
+```bash
+python3 application.py
+```
+
+Also, the database must be prepared manually for now and the database access credentials like username and password must be updated in the db_config in "application.py" along with the host name and database to be used.
 
 #### License:
 This project is licensed under the terms specified by the Department of Electronics and Computer Engineering, Pulchowk Campus, Institute of Engineering. For any use of the material in this project, including copying, publication, or other use for financial gain, prior written permission from the department and the authors is required.

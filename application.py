@@ -2,13 +2,15 @@
 #tkinter comes pre installed along with python
 #pip install ttkbootstrap
 #install tabulate if necessary
+import sys
+sys.path.insert(0, './NLP_module')
 
 import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
 from tabulate import tabulate
 from ttkbootstrap import Style
-from engine import get_query    #python file within this directory
+from engine import get_query
 #from termcolor import colored
 
 # Database configuration with credentials
