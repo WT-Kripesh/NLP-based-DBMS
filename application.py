@@ -10,15 +10,15 @@ from tkinter import messagebox
 import mysql.connector
 from tabulate import tabulate
 from ttkbootstrap import Style
-from engine import get_query
+from engine import get_query             # type: ignore
 #from termcolor import colored
 
-# Database configuration with credentials
+# Database configuration with credentials  :   change it if necessary
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'admin@123',
-    'database': 'nlp'
+    'password': 'avot',                         
+    'database': 'nlpdemo'
 }
 
 def execute_query():
