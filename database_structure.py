@@ -39,7 +39,7 @@ system_databases = ['information_schema', 'mysql', 'performance_schema', 'sys']
 list_of_databases = [db[0] for db in databases if db[0] not in system_databases]
 #print(list_of_databases)
 
-def find_all_the_tables_in_a_database(database_name):
+def find_all_the_tables_in_a_database(database_name,cursor):
     cursor.execute(f"USE {database_name}")
     cursor.execute("SHOW TABLES")
     tables = cursor.fetchall()
@@ -64,7 +64,7 @@ total_information = {}
 for db in list_of_databases:
 
     table_columns_dictionary = {}
-    all_tables_in_db = find_all_the_tables_in_a_database(db)
+    all_tables_in_db = find_all_the_tables_in_a_database(db,cursor)
     for table in all_tables_in_db:
         table_columns_dictionary[table] = find_all_the_columns_in_a_table_from_given_database(db, table)
     
