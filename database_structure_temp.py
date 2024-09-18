@@ -16,7 +16,6 @@ def find_all_the_tables_in_a_database(database_name,cursor):
     tables = [table[0] for table in tables]
     return tables
 
-
 def find_all_the_columns_in_a_table_from_given_database(database_name, table_name,cursor):
     cursor.execute(f"USE {database_name}")
     cursor.execute(f"DESCRIBE {table_name}")

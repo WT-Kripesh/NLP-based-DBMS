@@ -71,10 +71,9 @@ for db in list_of_databases:
     total_information[db] = table_columns_dictionary
 
 #print(total_information)
-
-#for key,value in total_information.items():
-#    print()
-#    print(f"{key}:{value}")
+for key,value in total_information.items():
+   print()
+   print(f"{key}:{value}")
    
 
 
