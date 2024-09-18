@@ -17,6 +17,17 @@ from database_connection import cursor, connection, db_config
 #for selecting database at the beginning
 def select_database():
     print()
+from engine import get_query
+#import database_structure
+#from termcolor import colored
+
+# Database configuration with credentials  :   change it if necessary
+db_config = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'admin@123',                         
+    'database': 'nlp'
+}
 
 
 def execute_query():
