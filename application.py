@@ -54,10 +54,10 @@ def open_main_application(selected_db, app_window):
             cursor.close()
             connection.close()
 
-            # Display results in the text widget, but first clearing it
-            result_text.delete(1.0, tk.END)
-            table = tabulate(results, headers=column_names, tablefmt='simple')
-            result_text.insert(tk.END, table)
+        # Display results in the text widget
+        result_text.delete(1.0, tk.END)
+        table = tabulate(results, headers=column_names, tablefmt='simple')
+        result_text.insert(tk.END, table)
 
         except mysql.connector.Error as err:
             messagebox.showerror("Database Error", str(err))
