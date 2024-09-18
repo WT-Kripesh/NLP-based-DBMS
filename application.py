@@ -29,14 +29,17 @@ db_config = {
     'database': 'nlp'
 }
 
-
 def execute_query():
     NL_query = query_entry.get()
-    #using function from engine 
-    #query generated from engine will be stored in this variable
+      #using function from ptc_latest 
+      #query generated from engine will be stored in this variable
     sql_query = get_query(NL_query)       
 
     try:
+        # Establish database connection
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
         #execute query
         cursor.execute(sql_query)
         #fetch results
@@ -48,7 +51,7 @@ def execute_query():
         cursor.close()
         connection.close()
 
-        # Display results in the text widget, but first clearing it
+        # Display results in the text widget
         result_text.delete(1.0, tk.END)
         table = tabulate(results, headers=column_names, tablefmt='simple')
         result_text.insert(tk.END, table)
