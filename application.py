@@ -1,11 +1,14 @@
 #build a GUI for our application using tkinter
 #tkinter comes pre installed along with python
+#customtkinter does NOT come pre installed 
+#pip install customtkinter
 #pip install ttkbootstrap
 #install tabulate if necessary
 import sys
 sys.path.insert(0, './NLP_module')
 
 import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox,ttk 
 import mysql.connector
 from tabulate import tabulate
@@ -13,6 +16,9 @@ from ttkbootstrap import Style
 from engine import get_query             # type: ignore
 import database_structure_temp
 from database_connection import cursor, connection, db_config
+
+ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("dark-blue")
 
 #for selecting database at the beginning
 def select_database(selected_db, root, app_window):
@@ -81,24 +87,23 @@ def open_main_application(selected_db, app_window):
     # Create and place widgets
 
     #for displaying tables on startup
-    label_tables = tk.Label(app_window, text=f"tables in database '{db_config['database']}':", font=("Helvetica",12))
-    label_tables.pack(anchor='w', padx=30,pady=5)
+    label_tables = ctk.CTkLabel(app_window, text=f"Tables in Database '{db_config['database']}':", font=("arial",16))
+    label_tables.pack(padx=30,pady=5)
 
-    tables_text = tk.Text(app_window, wrap=tk.WORD, width=90, height=5, font=("Courier",10), bg="#f8f9fa")
-    tables_text.pack(anchor='w', padx=30, pady=10)
+    tables_text = ctk.CTkTextbox(app_window,width=700,height=80, wrap='word', font=("Courier",14),corner_radius=6)
+    tables_text.pack(padx=30, pady=8)
 
-    label_query = tk.Label(app_window, text="Enter Natural Language Query:", font=("Helvetica",12))
-    label_query.pack(anchor='w',padx=30,pady=10)
+    label_query = ctk.CTkLabel(app_window, text="Enter Natural Language Query:", font=("arial",16))
+    label_query.pack(padx=30,pady=8)
 
-    query_entry = tk.Entry(app_window,width=90 ,font=("Helvetica",12))
-    query_entry.pack(anchor='w', padx=30, pady=5)
+    query_entry = ctk.CTkEntry(app_window,width=700,height=25,font=("arial",14), corner_radius=6, placeholder_text="eg: show all of the items")
+    query_entry.pack(padx=30, pady=5)
 
-    execute_button = tk.Button(app_window, text="Execute Query", command=execute_query,
-                            bg="#337ab7", fg="white", font=("Helvetica",12,"bold"))
-    execute_button.pack(pady=20)
+    execute_button = ctk.CTkButton(app_window, text="Execute Query", command=execute_query, font=("abcg",16,"bold"))
+    execute_button.pack(pady=10)
 
-    result_text = tk.Text(app_window, wrap=tk.WORD, width=90, height=20, font=("Courier",10), bg="#f8f9fa")
-    result_text.pack(anchor='w', padx=30, pady=10)
+    result_text = ctk.CTkTextbox(app_window,width=700,height=300, wrap='word', font=("Courier",14),corner_radius=6, border_width=1, border_color="#F0E68C" )
+    result_text.pack(padx=30, pady=8)
 
 
 
@@ -109,23 +114,29 @@ def open_main_application(selected_db, app_window):
     app_window.mainloop()
 
 def start_database_selection():
-    root = tk.Tk()
-    root.title("Select a Database")
+    root = ctk.CTk()
+    root.title("NLP based DMBS")
     root.geometry("800x550")
 
     #fetch the local databases
     databases = database_structure_temp.find_all_databases(cursor)
 
+    #creating frame for containing components
+    frame = ctk.CTkFrame(master=root,border_width=1,border_color="#F7F2C4")
+    frame.pack(expand=True)
+
     #dropdown menu for database selection
     selected_db = tk.StringVar(root)
-    database_label = tk.Label(root, text="Select Database", font=("Helvetica",14))
+    database_label = ctk.CTkLabel(master=frame, text="Select Database", font=("arial",20))
+    database_label.pack(padx=20,pady=10)
 
-    database_menu = ttk.Combobox(root, textvariable=selected_db, values=databases, font=("Helvetica",12), width=40)
+    database_menu = ctk.CTkComboBox(master=frame, width=300, height=30,values=databases,dropdown_font=("arial",15),
+                                    variable=selected_db, font=("arial",15))
     database_menu.pack(padx=20,pady=10)
 
     #button to proceed with the selected database
-    proceed_button = tk.Button(root, text="Proceed", command=lambda: 
-                               select_database(selected_db.get(), root, app_window=tk.Tk()))
+    proceed_button = ctk.CTkButton(master=frame, text="Proceed",font=("arial",15), command=lambda: 
+                               select_database(selected_db.get(), root, app_window=ctk.CTk()))
     proceed_button.pack(pady=20)
 
     #start the selection window
