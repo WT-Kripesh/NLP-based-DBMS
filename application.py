@@ -29,10 +29,11 @@ def center_window(window, width, height):
     window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
 
 #for selecting database at the beginning
-def select_database(selected_db, root, app_window):
+def select_database(selected_db, root):
     if selected_db:
         #close the selection window and open the main application window
         root.destroy()
+        app_window = ctk.CTk()
         open_main_application(selected_db, app_window)
     else:
         messagebox.showwarning("No Database Selected", "Please select a database")
@@ -54,6 +55,14 @@ def open_main_application(selected_db, app_window):
     center_window(app_window, window_width, window_height)
 
     db_config['database'] = selected_db
+
+    #toggle light/dark mode
+    def changeMode():
+        val = switch.get()
+        if val:
+            ctk.set_appearance_mode("light")
+        else:
+            ctk.set_appearance_mode("dark")
 
     def execute_query():
         NL_query = query_entry.get()
@@ -94,6 +103,10 @@ def open_main_application(selected_db, app_window):
 
 
     # Create and place widgets
+
+    #light/dark mode toggle switch
+    switch = ctk.CTkSwitch(app_window, text="Light Mode", onvalue=1,offvalue=0,command=changeMode)
+    switch.pack(anchor="e",padx=10, pady=0)
 
     #for displaying tables on startup
     label_tables = ctk.CTkLabel(app_window, text=f"Tables in Database '{db_config['database']}':", font=("arial",16))
@@ -140,6 +153,17 @@ def start_database_selection():
     #fetch the local databases
     databases = database_structure_temp.find_all_databases(cursor)
 
+    def changeMode():
+        val = switch.get()
+        if val:
+            ctk.set_appearance_mode("light")
+        else:
+            ctk.set_appearance_mode("dark")
+
+    #light/dark mode toggle switch
+    switch = ctk.CTkSwitch(root, text="Light Mode", onvalue=1,offvalue=0,command=changeMode)
+    switch.pack(anchor="e",padx=10, pady=0)
+
     #creating frame for containing components
     frame = ctk.CTkFrame(master=root,border_width=1,border_color="#F7F2C4")
     frame.pack(expand=True)
@@ -155,7 +179,7 @@ def start_database_selection():
 
     #button to proceed with the selected database
     proceed_button = ctk.CTkButton(master=frame, text="Proceed",font=("arial",15), command=lambda: 
-                               select_database(selected_db.get(), root, app_window=ctk.CTk()))
+                               select_database(selected_db.get(), root))
     proceed_button.pack(pady=20)
 
     #start the selection window
