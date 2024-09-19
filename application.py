@@ -20,6 +20,14 @@ from database_connection import cursor, connection, db_config
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
 
+#for centering the window
+def center_window(window, width, height):
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    x_coordinate = (screen_width // 2) - (width // 2)
+    y_coordinate = (screen_height // 2) - (height // 2)
+    window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
+
 #for selecting database at the beginning
 def select_database(selected_db, root, app_window):
     if selected_db:
@@ -38,7 +46,12 @@ def open_main_application(selected_db, app_window):
 
     app_window.title("NLP-Based DBMS")
     #adjust the window size
-    app_window.geometry("800x550")
+    #app_window.geometry("800x550")
+    window_width = 800
+    window_height = 550
+
+    #centre the window
+    center_window(app_window, window_width, window_height)
 
     db_config['database'] = selected_db
 
@@ -116,7 +129,13 @@ def open_main_application(selected_db, app_window):
 def start_database_selection():
     root = ctk.CTk()
     root.title("NLP based DMBS")
-    root.geometry("800x550")
+    #root.geometry("800x550")
+
+    window_width = 800
+    window_height = 550
+
+    #centre the window
+    center_window(root, window_width, window_height)
 
     #fetch the local databases
     databases = database_structure_temp.find_all_databases(cursor)
