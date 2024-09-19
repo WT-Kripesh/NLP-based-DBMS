@@ -68,10 +68,6 @@ def open_main_application(selected_db, app_window):
             results = cursor.fetchall()
 
             column_names = [desc[0] for desc in cursor.description]
-            
-            #close the cursor and connection
-            cursor.close()
-            connection.close()
 
             # Display results in the text widget
             result_text.delete(1.0, tk.END)
@@ -125,6 +121,10 @@ def open_main_application(selected_db, app_window):
 
     #start the mainloop for app window
     app_window.mainloop()
+
+    #close the cursor and connection
+    cursor.close()
+    connection.close()
 
 def start_database_selection():
     root = ctk.CTk()
