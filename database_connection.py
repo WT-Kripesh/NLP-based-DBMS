@@ -6,8 +6,8 @@ import mysql.connector
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'avot',                         
-    'database': 'nlpdemo'
+    'password': 'admin@123',                         
+    'database': 'nlp'
 }
 
 # Establish database connection

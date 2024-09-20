@@ -14,7 +14,7 @@ import mysql.connector
 from tabulate import tabulate
 from ttkbootstrap import Style
 from engine import get_query             # type: ignore
-import database_structure_temp
+import NLP_module.database_structure_temp as database_structure_temp
 from database_connection import cursor, connection, db_config
 
 ctk.set_appearance_mode("dark")
@@ -81,6 +81,10 @@ def open_main_application(selected_db, app_window):
             # Display results in the text widget
             result_text.delete(1.0, tk.END)
             table = tabulate(results, headers=column_names, tablefmt='simple')
+            result_text.insert(tk.END, "SQL Query\n")
+            result_text.insert(tk.END, sql_query)
+            result_text.insert(tk.END, "\n\n")
+        
             result_text.insert(tk.END, table)
 
         except mysql.connector.Error as err:
@@ -125,6 +129,7 @@ def open_main_application(selected_db, app_window):
     execute_button.pack(pady=10)
 
     result_text = ctk.CTkTextbox(app_window,width=700,height=300, wrap='word', font=("Courier",14),corner_radius=6, border_width=1, border_color="#F0E68C" )
+    
     result_text.pack(padx=30, pady=8)
 
 
