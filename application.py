@@ -27,6 +27,7 @@ ctk.set_default_color_theme("dark-blue")
 def center_window(window, width, height):
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
+    print(screen_height)
     x_coordinate = (screen_width // 2) - (width // 2)
     y_coordinate = (screen_height // 2) - (height // 2)
     window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
@@ -68,7 +69,7 @@ def open_main_application(selected_db, app_window):
         else:
             ctk.set_appearance_mode("dark")
 
-    def execute_query():
+    def execute_query(event=None):
         NL_query = query_entry.get()
         #using function from engine 
         #query generated from engine will be stored in this variable
@@ -128,6 +129,7 @@ def open_main_application(selected_db, app_window):
 
     query_entry = ctk.CTkEntry(app_window,width=700,height=30,font=("arial",16), corner_radius=6, placeholder_text="eg: show all of the items")
     query_entry.pack(padx=30, pady=5)
+    query_entry.bind("<Return>", execute_query)
 
     execute_button = ctk.CTkButton(app_window, text="Execute Query", command=execute_query, font=("abcg",16,"bold"))
     execute_button.pack(pady=10)
@@ -201,7 +203,6 @@ def start_database_selection(db_config, db_select_root):
 def login():
     login_root = ctk.CTk()
     login_root.title("NLP based DMBS")
-    #root.geometry("800x550")
 
     window_width = 800
     window_height = 550
@@ -251,8 +252,9 @@ def login():
     
     label_password = ctk.CTkLabel(frame, text="Password:", font=("arial",14))
     label_password.pack(anchor="w",padx=30,pady=1)
-    password_entry = ctk.CTkEntry(frame,width=300,height=25,font=("arial",14), corner_radius=6, placeholder_text="hum_vinod")
+    password_entry = ctk.CTkEntry(frame,width=300,height=25,font=("arial",14), corner_radius=6, placeholder_text="hum_vinod", show="•")
     password_entry.pack(padx=30)
+    password_entry.bind("<Return>",lambda event: authenticate(login_root,update_db_config()))
 
     #button to proceed with the selected database
     proceed_button = ctk.CTkButton(master=frame, text="Proceed",font=("arial",15), command=lambda: 
@@ -264,7 +266,7 @@ def login():
 
 
 
-def authenticate(login_root,dummy):
+def authenticate(login_root,dummy,event=None):
     if db_config:
         print(db_config)
         

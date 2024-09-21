@@ -7,7 +7,7 @@ db_config = {
     'host': 'localhost',
     'user': 'root',
     'password': 'avot',                         
-    'database': 'nlpdemo'
+    'database': ''
 }
 
 # Establish database connection
