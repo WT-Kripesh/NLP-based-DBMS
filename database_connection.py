@@ -6,10 +6,10 @@ import mysql.connector
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'admin@123',                         
-    'database': 'nlp'
+    'password': 'avot',                         
+    'database': 'nlpdemo'
 }
 
 # Establish database connection
-connection = mysql.connector.connect(**db_config)
-cursor = connection.cursor()
+# connection = mysql.connector.connect(**db_config)
+# cursor = connection.cursor()

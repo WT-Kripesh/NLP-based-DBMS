@@ -12,10 +12,13 @@ import customtkinter as ctk
 from tkinter import messagebox,ttk 
 import mysql.connector
 from tabulate import tabulate
-from ttkbootstrap import Style
+#from ttkbootstrap import Style
 from engine import get_query             # type: ignore
 import NLP_module.database_structure_temp as database_structure_temp
-from database_connection import cursor, connection, db_config
+#from database_connection import cursor, connection, db_config
+from database_connection import db_config
+
+
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
@@ -61,6 +64,7 @@ def open_main_application(selected_db, app_window):
         val = switch.get()
         if val:
             ctk.set_appearance_mode("light")
+
         else:
             ctk.set_appearance_mode("dark")
 
@@ -129,7 +133,6 @@ def open_main_application(selected_db, app_window):
     execute_button.pack(pady=10)
 
     result_text = ctk.CTkTextbox(app_window,width=700,height=300, wrap='word', font=("Courier",14),corner_radius=6, border_width=1, border_color="#F0E68C" )
-    
     result_text.pack(padx=30, pady=8)
 
 
@@ -144,16 +147,15 @@ def open_main_application(selected_db, app_window):
     cursor.close()
     connection.close()
 
-def start_database_selection():
-    root = ctk.CTk()
-    root.title("NLP based DMBS")
+def start_database_selection(db_config, db_select_root):
+    db_select_root.title("NLP based DMBS")
     #root.geometry("800x550")
 
     window_width = 800
     window_height = 550
 
     #centre the window
-    center_window(root, window_width, window_height)
+    center_window(db_select_root, window_width, window_height)
 
     #fetch the local databases
     databases = database_structure_temp.find_all_databases(cursor)
@@ -166,15 +168,15 @@ def start_database_selection():
             ctk.set_appearance_mode("dark")
 
     #light/dark mode toggle switch
-    switch = ctk.CTkSwitch(root, text="Light Mode", onvalue=1,offvalue=0,command=changeMode)
+    switch = ctk.CTkSwitch(db_select_root, text="Light Mode", onvalue=1,offvalue=0,command=changeMode)
     switch.pack(anchor="e",padx=10, pady=0)
 
     #creating frame for containing components
-    frame = ctk.CTkFrame(master=root,border_width=1,border_color="#F7F2C4")
+    frame = ctk.CTkFrame(master=db_select_root,border_width=1,border_color="#F7F2C4")
     frame.pack(expand=True)
 
     #dropdown menu for database selection
-    selected_db = tk.StringVar(root)
+    selected_db = tk.StringVar(db_select_root)
     database_label = ctk.CTkLabel(master=frame, text="Select Database", font=("arial",20))
     database_label.pack(padx=20,pady=10)
 
@@ -184,11 +186,102 @@ def start_database_selection():
 
     #button to proceed with the selected database
     proceed_button = ctk.CTkButton(master=frame, text="Proceed",font=("arial",15), command=lambda: 
-                               select_database(selected_db.get(), root))
+                               select_database(selected_db.get(), db_select_root))
     proceed_button.pack(pady=20)
 
     #start the selection window
-    root.mainloop()
+    db_select_root.mainloop()
 
-# Run the application with database selection window
-start_database_selection()
+
+####
+
+#for login page from here onwards
+
+def login():
+    login_root = ctk.CTk()
+    login_root.title("NLP based DMBS")
+    #root.geometry("800x550")
+
+    window_width = 800
+    window_height = 550
+
+    #centre the window
+    center_window(login_root, window_width, window_height)
+
+    def update_db_config():
+        db_config['host'] = host_entry.get()
+        db_config['user'] = user_entry.get()
+        db_config['password'] = password_entry.get()
+        return
+
+    def changeMode():
+        val = switch.get()
+        if val:
+            ctk.set_appearance_mode("light")
+        else:
+            ctk.set_appearance_mode("dark")
+
+    #light/dark mode toggle switch
+    switch = ctk.CTkSwitch(login_root, text="Light Mode", onvalue=1,offvalue=0,command=changeMode)
+    switch.pack(anchor="e",padx=10, pady=0)
+
+    #creating frame for containing components
+    frame = ctk.CTkFrame(master=login_root,border_width=1,border_color="#F7F2C4")
+    frame.pack(expand=True)
+
+    database_label = ctk.CTkLabel(master=frame, text="MySQL authentication", font=("arial",18))
+    database_label.pack(padx=20,pady=10)
+
+    #series of entries to gather credentials
+    
+    label_host = ctk.CTkLabel(frame, text="Host:", font=("arial",14))
+    label_host.pack(anchor="w",padx=30,pady=1)
+    host_entry = ctk.CTkEntry(frame,width=300,height=25,font=("arial",14), corner_radius=6, placeholder_text="localhost")
+    host_entry.pack(padx=30)
+    #pre-set the default value
+    host_entry.insert(0, "localhost")
+
+    label_user = ctk.CTkLabel(frame, text="User:", font=("arial",14))
+    label_user.pack(anchor="w",padx=30,pady=1)
+    user_entry = ctk.CTkEntry(frame,width=300,height=25,font=("arial",14), corner_radius=6, placeholder_text="root")
+    user_entry.pack(padx=30)
+    #pre-set the defualt value
+    user_entry.insert(0, "root")
+    
+    label_password = ctk.CTkLabel(frame, text="Password:", font=("arial",14))
+    label_password.pack(anchor="w",padx=30,pady=1)
+    password_entry = ctk.CTkEntry(frame,width=300,height=25,font=("arial",14), corner_radius=6, placeholder_text="hum_vinod")
+    password_entry.pack(padx=30)
+
+    #button to proceed with the selected database
+    proceed_button = ctk.CTkButton(master=frame, text="Proceed",font=("arial",15), command=lambda: 
+                               authenticate(login_root,update_db_config()))
+    proceed_button.pack(pady=20)
+
+    #start the selection window
+    login_root.mainloop()
+
+
+
+def authenticate(login_root,dummy):
+    if db_config:
+        print(db_config)
+        
+        try:
+            login_root.destroy()
+
+            global cursor,connection
+            connection = mysql.connector.connect(**db_config)
+            cursor = connection.cursor()
+
+            db_select_root = ctk.CTk()
+            start_database_selection(db_config, db_select_root)
+        
+        except:
+            messagebox.showwarning("Authentication failed", "Please check credentials")
+   
+    else:
+        messagebox.showwarning("Authentication failed", "Please check credentials")
+
+#run the application with login window.
+login()
