@@ -24,13 +24,17 @@ ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
 
 #for centering the window
-def center_window(window, width, height):
+def center_window(window):
+    global screen_width,screen_height
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
-    print(screen_height)
-    x_coordinate = (screen_width // 2) - (width // 2)
-    y_coordinate = (screen_height // 2) - (height // 2)
-    window.geometry(f"{width}x{height}+{x_coordinate}+{y_coordinate}")
+
+    window_width = int(screen_width * 0.60)  # 58.6% of screen width
+    window_height = int(screen_height * 0.725)  # 71.5% of screen height
+
+    x_coordinate = (screen_width // 2) - (window_width // 2)
+    y_coordinate = (screen_height // 2) - (window_height // 2)
+    window.geometry(f"{window_width}x{window_height}+{x_coordinate}+{y_coordinate}")
 
 #for selecting database at the beginning
 def select_database(selected_db, root):
@@ -56,7 +60,7 @@ def open_main_application(selected_db, app_window):
     window_height = 800
 
     #centre the window
-    center_window(app_window, window_width, window_height)
+    center_window(app_window)
 
     db_config['database'] = selected_db
 
@@ -121,22 +125,22 @@ def open_main_application(selected_db, app_window):
     label_tables = ctk.CTkLabel(app_window, text=f"Tables in Database '{db_config['database']}':", font=("arial",16))
     label_tables.pack(padx=30,pady=5)
 
-    tables_text = ctk.CTkTextbox(app_window,width=700,height=90, wrap='word', font=("Courier",16),corner_radius=6)
+    tables_text = ctk.CTkTextbox(app_window,width=int(screen_width*0.516),height=90, wrap='word', font=("Courier",16),corner_radius=6)
     tables_text.pack(padx=30, pady=8)
 
     label_query = ctk.CTkLabel(app_window, text="Enter Natural Language Query:", font=("arial",18))
     label_query.pack(padx=30,pady=8)
 
-    query_entry = ctk.CTkEntry(app_window,width=700,height=30,font=("arial",16), corner_radius=6, placeholder_text="eg: show all of the items")
+    query_entry = ctk.CTkEntry(app_window,width=int(screen_width*0.516),height=30,font=("arial",16), corner_radius=6, placeholder_text="eg: show all of the items")
     query_entry.pack(padx=30, pady=5)
     query_entry.bind("<Return>", execute_query)
 
     execute_button = ctk.CTkButton(app_window, text="Execute Query", command=execute_query, font=("abcg",16,"bold"))
     execute_button.pack(pady=10)
 
-    result_text = ctk.CTkTextbox(app_window,width=700,height=400, wrap='word', font=("Courier",16),corner_radius=6, border_width=1, border_color="#F0E68C" )
+    result_text = ctk.CTkTextbox(app_window,width=int(screen_width*0.516),height=400, wrap='word', font=("Courier",15),corner_radius=6, border_width=1, border_color="#F0E68C" )
     
-    result_text.pack(padx=30, pady=8)
+    result_text.pack(padx=30, pady=(4,15))
 
 
 
@@ -158,7 +162,7 @@ def start_database_selection(db_config, db_select_root):
     window_height = 550
 
     #centre the window
-    center_window(db_select_root, window_width, window_height)
+    center_window(db_select_root)
 
     #fetch the local databases
     databases = database_structure_temp.find_all_databases(cursor)
@@ -183,7 +187,7 @@ def start_database_selection(db_config, db_select_root):
     database_label = ctk.CTkLabel(master=frame, text="Select Database", font=("arial",20))
     database_label.pack(padx=20,pady=10)
 
-    database_menu = ctk.CTkComboBox(master=frame, width=300, height=30,values=databases,dropdown_font=("arial",15),
+    database_menu = ctk.CTkComboBox(master=frame, width=int(screen_width*0.219), height=30,values=databases,dropdown_font=("arial",15),
                                     variable=selected_db, font=("arial",15))
     database_menu.pack(padx=20,pady=10)
 
@@ -208,7 +212,7 @@ def login():
     window_height = 550
 
     #centre the window
-    center_window(login_root, window_width, window_height)
+    center_window(login_root)
 
     def update_db_config():
         db_config['host'] = host_entry.get()
@@ -238,21 +242,21 @@ def login():
     
     label_host = ctk.CTkLabel(frame, text="Host:", font=("arial",14))
     label_host.pack(anchor="w",padx=30,pady=1)
-    host_entry = ctk.CTkEntry(frame,width=300,height=25,font=("arial",14), corner_radius=6, placeholder_text="localhost")
+    host_entry = ctk.CTkEntry(frame,width=int(screen_width*0.219),height=30,font=("arial",14), corner_radius=6, placeholder_text="localhost")
     host_entry.pack(padx=30)
     #pre-set the default value
     host_entry.insert(0, "localhost")
 
     label_user = ctk.CTkLabel(frame, text="User:", font=("arial",14))
     label_user.pack(anchor="w",padx=30,pady=1)
-    user_entry = ctk.CTkEntry(frame,width=300,height=25,font=("arial",14), corner_radius=6, placeholder_text="root")
+    user_entry = ctk.CTkEntry(frame,width=int(screen_width*0.219),height=30,font=("arial",14), corner_radius=6, placeholder_text="root")
     user_entry.pack(padx=30)
     #pre-set the defualt value
     user_entry.insert(0, "root")
     
     label_password = ctk.CTkLabel(frame, text="Password:", font=("arial",14))
     label_password.pack(anchor="w",padx=30,pady=1)
-    password_entry = ctk.CTkEntry(frame,width=300,height=25,font=("arial",14), corner_radius=6, placeholder_text="hum_vinod", show="•")
+    password_entry = ctk.CTkEntry(frame,width=int(screen_width*0.219),height=30,font=("arial",14), corner_radius=6, placeholder_text="hum_vinod", show="•")
     password_entry.pack(padx=30)
     password_entry.bind("<Return>",lambda event: authenticate(login_root,update_db_config()))
 
