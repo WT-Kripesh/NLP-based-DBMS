@@ -51,8 +51,8 @@ def open_main_application(selected_db, app_window):
     app_window.title("NLP-Based DBMS")
     #adjust the window size
     #app_window.geometry("800x550")
-    window_width = 800
-    window_height = 550
+    window_width = 1080
+    window_height = 800
 
     #centre the window
     center_window(app_window, window_width, window_height)
@@ -120,19 +120,20 @@ def open_main_application(selected_db, app_window):
     label_tables = ctk.CTkLabel(app_window, text=f"Tables in Database '{db_config['database']}':", font=("arial",16))
     label_tables.pack(padx=30,pady=5)
 
-    tables_text = ctk.CTkTextbox(app_window,width=700,height=80, wrap='word', font=("Courier",14),corner_radius=6)
+    tables_text = ctk.CTkTextbox(app_window,width=700,height=90, wrap='word', font=("Courier",16),corner_radius=6)
     tables_text.pack(padx=30, pady=8)
 
-    label_query = ctk.CTkLabel(app_window, text="Enter Natural Language Query:", font=("arial",16))
+    label_query = ctk.CTkLabel(app_window, text="Enter Natural Language Query:", font=("arial",18))
     label_query.pack(padx=30,pady=8)
 
-    query_entry = ctk.CTkEntry(app_window,width=700,height=25,font=("arial",14), corner_radius=6, placeholder_text="eg: show all of the items")
+    query_entry = ctk.CTkEntry(app_window,width=700,height=30,font=("arial",16), corner_radius=6, placeholder_text="eg: show all of the items")
     query_entry.pack(padx=30, pady=5)
 
     execute_button = ctk.CTkButton(app_window, text="Execute Query", command=execute_query, font=("abcg",16,"bold"))
     execute_button.pack(pady=10)
 
-    result_text = ctk.CTkTextbox(app_window,width=700,height=300, wrap='word', font=("Courier",14),corner_radius=6, border_width=1, border_color="#F0E68C" )
+    result_text = ctk.CTkTextbox(app_window,width=700,height=400, wrap='word', font=("Courier",16),corner_radius=6, border_width=1, border_color="#F0E68C" )
+    
     result_text.pack(padx=30, pady=8)
 
 
