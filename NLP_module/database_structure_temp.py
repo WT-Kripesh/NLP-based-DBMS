@@ -1,3 +1,5 @@
+#functions to retrieve relevant information about database
+import re
 
 #list of inbuilt system databases to ignore
 system_databases = ['information_schema', 'mysql', 'performance_schema', 'sys']
@@ -22,6 +24,17 @@ def find_all_the_columns_in_a_table_from_given_database(database_name, table_nam
     columns = cursor.fetchall()
     columns = [column[0] for column in columns]
     return columns
+
+def find_all_the_columns_in_a_table_from_given_database_with_datatype(database_name, table_name, cursor):
+    cursor.execute(f"USE {database_name}")
+    cursor.execute(f"DESCRIBE {table_name}")
+    columns = cursor.fetchall()
+    columns_with_datatype = []
+    for column in columns:
+        column = list(column)
+        column[1] = re.sub(r'[^a-zA-Z]', '', column[1])
+        columns_with_datatype.append({column[0] : column[1]})
+    return columns_with_datatype
 
 def fetch_total_information(list_of_databases, cursor):
     total_information_dict = {}
