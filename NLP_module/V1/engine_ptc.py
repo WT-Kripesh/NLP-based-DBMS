@@ -1,5 +1,5 @@
-from database_structure import total_information
-from database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
+from NLP_module.database_structure import total_information
+from NLP_module.database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
 
 
 import mysql.connector

@@ -13,8 +13,8 @@ from tkinter import messagebox,ttk
 import mysql.connector
 from tabulate import tabulate
 #from ttkbootstrap import Style
-from Query_generator import get_query             # type: ignore
-import NLP_module.database_structure as database_structure
+from engine import get_query             # type: ignore
+import NLP_module.database_structure_temp as database_structure_temp
 #from database_connection import cursor, connection, db_config
 from NLP_module.database_connection import db_config
 
@@ -77,7 +77,7 @@ def open_main_application(selected_db, app_window):
         NL_query = query_entry.get()
         #using function from engine 
         #query generated from engine will be stored in this variable
-        sql_query = get_query(NL_query, cursor)       
+        sql_query = get_query(NL_query)       
 
         try:
             #execute query
@@ -106,24 +106,13 @@ def open_main_application(selected_db, app_window):
         tables_text.delete(1.0, tk.END)
 
         #fetch the tables from the database
-        tables = database_structure.find_all_the_tables_in_a_database(db_config['database'],cursor)
+        tables = database_structure_temp.find_all_the_tables_in_a_database(db_config['database'],cursor)
 
         #insert the list of tables into the result_text widget
         for table in tables:
-            attributes = database_structure.find_all_the_columns_in_a_table_from_given_database_with_datatype(db_config['database'],table,cursor)
-            # print(attributes)
-            final_table_content = ''
-            for index , attribute in enumerate(attributes):
-                temp_key = list(attribute.keys())[0]
-                temp_value = list(attribute.values())[0]
-                temp = temp_key + ' : ' + temp_value  
-                if index != len(attributes) - 1:
-                    final_table_content +=  temp + '  |  '
-                else:
-                    final_table_content +=  temp
-
-
-            tables_text.insert(tk.END,f"# {table} -> {final_table_content}\n")
+            attributes = database_structure_temp.find_all_the_columns_in_a_table_from_given_database(db_config['database'],table,cursor)
+            temp = ', '.join(attributes)
+            tables_text.insert(tk.END,f"# {table} : {temp}\n")
 
 
     # Create and place widgets
@@ -176,7 +165,7 @@ def start_database_selection(db_config, db_select_root):
     center_window(db_select_root)
 
     #fetch the local databases
-    databases = database_structure.find_all_databases(cursor)
+    databases = database_structure_temp.find_all_databases(cursor)
 
     def changeMode():
         val = switch.get()
@@ -276,7 +265,7 @@ def login():
                                authenticate(login_root,update_db_config()))
     proceed_button.pack(pady=20)
 
-    #start the selection window
+    #start the selection windowP
     login_root.mainloop()
 
 
