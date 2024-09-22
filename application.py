@@ -284,18 +284,18 @@ def login():
 def authenticate(login_root,dummy,event=None):
     if db_config:
         print(db_config)
-        
-        try:
-            login_root.destroy()
 
+        try:
             global cursor,connection
             connection = mysql.connector.connect(**db_config)
             cursor = connection.cursor()
+            
+            login_root.destroy()
 
             db_select_root = ctk.CTk()
             start_database_selection(db_config, db_select_root)
         
-        except:
+        except mysql.connector.Error:
             messagebox.showwarning("Authentication failed", "Please check credentials")
    
     else:
