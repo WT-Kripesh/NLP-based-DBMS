@@ -13,7 +13,7 @@ from tkinter import messagebox,ttk
 import mysql.connector
 from tabulate import tabulate
 #from ttkbootstrap import Style
-from Query_generator import get_query             # type: ignore
+from NLP_module.Query_generator import get_query
 import NLP_module.database_structure as database_structure
 #from database_connection import cursor, connection, db_config
 from NLP_module.database_connection import db_config

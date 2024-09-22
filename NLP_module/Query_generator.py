@@ -1,7 +1,7 @@
-from database_structure import find_total_information_of_selected_db
-from database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
-from database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
-from database_connection import db_config
+from NLP_module.database_structure import find_total_information_of_selected_db
+from NLP_module.database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
+from NLP_module.database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
+from NLP_module.database_connection import db_config
 import re
 
 dict_of_synonyms = {
@@ -606,7 +606,6 @@ def get_query(NL_query, cursor):
         final_query += "\n" + "WHERE " + where_clause
     if order_by_clause:
         final_query += "\n" + "ORDER BY " + order_by_clause
-    print(final_query)
     return final_query
 
     

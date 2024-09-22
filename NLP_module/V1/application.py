@@ -14,7 +14,7 @@ import mysql.connector
 from tabulate import tabulate
 #from ttkbootstrap import Style
 from engine import get_query             # type: ignore
-import NLP_module.database_structure_temp as database_structure_temp
+import NLP_module.database_structure as database_structure_temp
 #from database_connection import cursor, connection, db_config
 from NLP_module.database_connection import db_config
 
