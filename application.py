@@ -110,20 +110,10 @@ def open_main_application(selected_db, app_window):
 
         #insert the list of tables into the result_text widget
         for table in tables:
-            attributes = database_structure.find_all_the_columns_in_a_table_from_given_database_with_datatype(db_config['database'],table,cursor)
-            # print(attributes)
-            final_table_content = ''
-            for index , attribute in enumerate(attributes):
-                temp_key = list(attribute.keys())[0]
-                temp_value = list(attribute.values())[0]
-                temp = temp_key + ' : ' + temp_value  
-                if index != len(attributes) - 1:
-                    final_table_content +=  temp + '  |  '
-                else:
-                    final_table_content +=  temp
+            attributes = database_structure.find_all_the_columns_in_a_table_from_given_database(db_config['database'],table,cursor)
+            temp = ', '.join(attributes)
+            tables_text.insert(tk.END,f"# {table} : {temp}\n")
 
-
-            tables_text.insert(tk.END,f"# {table} -> {final_table_content}\n")
 
 
     # Create and place widgets
