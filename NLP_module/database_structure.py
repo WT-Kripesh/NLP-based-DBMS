@@ -54,17 +54,6 @@ def find_total_information_of_selected_db(db, cursor):
     
     return table_columns_dictionary
 
-def find_all_the_columns_in_a_table_from_given_database_with_datatype(database_name, table_name, cursor):
-    cursor.execute(f"USE {database_name}")
-    cursor.execute(f"DESCRIBE {table_name}")
-    columns = cursor.fetchall()
-    # print(columns)
-    columns_with_datatype = []
-    for column in columns:
-        column = list(column)
-        column[1] = re.sub(r'[^a-zA-Z]', '', column[1])
-        columns_with_datatype.append({column[0] : column[1]})
-    return columns_with_datatype
 
 def find_data_type_of_the_given_attribute(cursor, selected_db, from_clause, attribute):
 
@@ -83,20 +72,3 @@ def find_data_type_of_the_given_attribute(cursor, selected_db, from_clause, attr
             break  # Break the outer loop
     
     return (list(columns_with_datatype[idx].values()))[0]
-# objective is to make datastructure like this which holds entire information needed for further analysis...
-# it is a nested dictionary structure. 
-
-# {
-#     'database1' : 
-#     {
-#         'table1' : ['col1', 'col2', 'col3'] ,
-#         'table2' : ['col1', 'col2', 'col3'] ,
-#         'table3' : ['col1', 'col2', 'col3'] ,
-#     },
-#     'database2' : 
-#     {
-#         'table1' : ['col1', 'col2', 'col3'] ,
-#         'table2' : ['col1', 'col2', 'col3'] ,
-#         'table3' : ['col1', 'col2', 'col3'] ,
-#     },
-# }

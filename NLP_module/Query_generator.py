@@ -1,17 +1,17 @@
-from NLP_module.database_structure import find_total_information_of_selected_db
-from NLP_module.database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
-from NLP_module.database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
-from NLP_module.database_connection import db_config
+from .database_structure import find_total_information_of_selected_db
+from .database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
+from .database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
+from .database_connection import db_config
 import re
 
 dict_of_synonyms = {
     'select_list' : ["fetch", "get", "display", "list", "find", "show", "retrieve", "pull", "extract", "collect", "gather", "bring", "return"], 
 
-    'from_list' : ["from", "of"],
+    'from_list' : [ "from","of"],
 
     '*_list' : ["every", "all", "everything", "any", "each", "whole", "entire", "total"], 
 
-    'where_list' : ["whose", "which", "with", 'where', "having", "that", "who"], 
+    'where_list' : ["whose", "which", "with", 'where', "having", "that", "who","from"], 
 
     '>_list' : ["more", "above", "greater", "exceeding", "over", "higher", 
     "larger", "superior", "bigger", "exceeds", "exceed", "greater than"], 
@@ -37,14 +37,7 @@ dict_of_synonyms = {
     'asc_list' : ["ascending", "lowest to highest", "smallest to largest", "smallest to biggest", "increasing", "in ascending order", "in increasing order",]
 }
 
-
-
-
-
-
 symbols= [',', '/', ';', ':', '"', "'", '!', '?', '@', '#', '$', '%', '^', '&', '*', '(', ')', '{', '}', '[', ']', '|', '\\', '~']
-
-
 
 def custom_unigram_tokenizer(text):
     # Regular expression to split by spaces but retain '.' in numbers
@@ -69,40 +62,9 @@ def tokenize_the_text(text, n):
     return [ngram for ngram in ngrams if ngram.strip()]  # Filter out empty strings
 
 
-
-
-
-# print(tokens)
-# tokens has been generated in tokens variable.
-# print(tokens)
-#lets select a database first
-
-#lets extract table first
-#stores tables and columns information about selected_db, it is in dictionary format where keys are table name and value is a list which contains list of columns/attributes
-
-#list of tables in selected dB
-# print(list_of_tables)
-
-
-
-
-
-
-# print(list_of_tables)
 #Selection of table
 #table is selected based on the NL query. 
 def find_data_type_of_the_given_attribute(cursor, selected_db, from_clause, attribute):
-# # Database configuration with credentials  :   change it if necessary
-#     db_config = {
-#         'host': 'localhost',
-#         'user': 'root',
-#         'password': 'Root@55261',                         
-#     }
-
-#     # Establish database connection
-
-#     connection = mysql.connector.connect(**db_config)
-#     cursor = connection.cursor()
 
     columns_with_datatype = find_all_the_columns_in_a_table_from_given_database_with_datatype(selected_db, from_clause, cursor)
 
@@ -169,12 +131,6 @@ def longest_common_subsequence(s1, s2):
 
     return lcs_length, lcs_string
 
-# print(longest_common_subsequence('employees', 'teacher_table'))
-#word 1 should always be lcs, word2 should be entinty name
-
-
-
-# print(type(find_data_type_of_the_given_attribute('salary')))
 
 def find_neighbour_similarity_count(word1, word2):
     count = 0
@@ -259,22 +215,9 @@ def find_from_clause(tokens, list_of_tables):
 
 
 
-#selected_table
-
-# print(from_clause)
-# print(from_clause)
-
-
-
 #lets find out list of columns name which is included in the NL query
-
-
-
-
-
-
-
 #assumption: select list ra from list ko bichmaa hunxa...
+
 #for select clause 
 def find_select_clause(list_of_column_in_selected_table, tokens):
     select_clause = []
@@ -529,7 +472,9 @@ def find_where_clause(cursor, selected_db, from_clause, list_of_column_in_select
             # print(last_token)
 
             value = extract_value(temp_conditional, last_token)
-            # print(value)
+            if ( find_data_type_of_the_given_attribute(cursor, selected_db, from_clause, attribute) == 'varchar' ):
+                value = "\'" + value + "\'"
+                print(value)
             
             where_clause_conditions.append(attribute + operator + value)
             # print(where_clause_conditions)
@@ -597,7 +542,7 @@ def get_query(NL_query, cursor):
     list_of_tables = list( selected_db_info.keys())
     from_clause = find_from_clause(tokens, list_of_tables)
     list_of_column_in_selected_table = selected_db_info[from_clause]
-    select_clause = find_select_clause(list_of_column_in_selected_table, tokens)
+    select_clause = find_select_clause(list_of_column_in_selected_table, tokens )
     where_clause = find_where_clause(cursor, selected_db, from_clause, list_of_column_in_selected_table, tokens)
     order_by_clause = find_ordered_by_clause(list_of_column_in_selected_table, tokens)
 

@@ -1,9 +1,3 @@
-#build a GUI for our application using tkinter
-#tkinter comes pre installed along with python
-#customtkinter does NOT come pre installed 
-#pip install customtkinter
-#pip install ttkbootstrap
-#install tabulate if necessary
 import sys
 sys.path.insert(0, './NLP_module')
 
@@ -12,10 +6,8 @@ import customtkinter as ctk
 from tkinter import messagebox,ttk 
 import mysql.connector
 from tabulate import tabulate
-#from ttkbootstrap import Style
 from NLP_module.Query_generator import get_query
 import NLP_module.database_structure as database_structure
-#from database_connection import cursor, connection, db_config
 from NLP_module.database_connection import db_config
 
 
@@ -126,7 +118,7 @@ def open_main_application(selected_db, app_window):
     label_tables = ctk.CTkLabel(app_window, text=f"Tables in Database '{db_config['database']}':", font=("arial",16))
     label_tables.pack(padx=30,pady=5)
 
-    tables_text = ctk.CTkTextbox(app_window,width=int(screen_width*0.516),height=90, wrap='word', font=("Courier",16),corner_radius=6)
+    tables_text = ctk.CTkTextbox(app_window,width=int(screen_width*0.516),height=100, wrap='word', font=("Courier",16),corner_radius=6)
     tables_text.pack(padx=30, pady=8)
 
     label_query = ctk.CTkLabel(app_window, text="Enter Natural Language Query:", font=("arial",18))

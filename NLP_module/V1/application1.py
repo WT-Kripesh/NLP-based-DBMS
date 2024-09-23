@@ -4,8 +4,8 @@
 #pip install customtkinter
 #pip install ttkbootstrap
 #install tabulate if necessary
-import sys
-sys.path.insert(0, './NLP_module')
+# import sys
+# sys.path.insert(0, './NLP_module')
 
 import tkinter as tk
 import customtkinter as ctk
