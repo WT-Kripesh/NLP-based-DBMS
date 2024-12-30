@@ -82,7 +82,7 @@ def open_main_application(selected_db, app_window):
             # Display results in the text widget
             result_text.delete(1.0, tk.END)
             table = tabulate(results, headers=column_names, tablefmt='simple')
-            result_text.insert(tk.END, "SQL Query\n")
+            result_text.insert(tk.END, "SQL Query\n\n")
             result_text.insert(tk.END, sql_query)
             result_text.insert(tk.END, "\n\n")
         

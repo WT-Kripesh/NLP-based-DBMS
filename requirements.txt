@@ -2,3 +2,5 @@ mysql-connector-python
 tabulate
 ttkbootstrap
 customtkinter
+streamlit
+streamlit transformers
