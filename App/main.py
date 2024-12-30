@@ -1,8 +1,10 @@
 import streamlit as st
 
 def main():
-    st.set_page_config(page_title="NLP-Based DBMS", layout="wide")
-    st.title("Welcome to NLP-Based DBMS")
+    st.set_page_config(page_title="NLP-Based DBMS",initial_sidebar_state='collapsed',menu_items={
+        'About': "# This is a header. This is an *extremely* cool app!"
+    })
+    st.title("NLP Based DBMS")
     
     # Promotional and informative content
     st.header("About Our Project")
@@ -13,9 +15,9 @@ def main():
 
     st.header("Meet the Developers")
     st.write("""
-        - Developer 1: [Name and Role]
-        - Developer 2: [Name and Role]
-        - Developer 3: [Name and Role]
+        - Avahan Tamrahkar [Application developer]
+        - Javed Ansari [NLP engineer]
+        - Kripesh Nihure [Web developer]
     """)
 
     st.header("Key Features")
@@ -35,6 +37,8 @@ def main():
     st.markdown("""
         ### Let's get started by navigating to the Configuration page!
     """)
+    if st.button('Start querying!'):
+        st.switch_page("pages/Configuration.py")
     
 if __name__ == "__main__":
     main()
