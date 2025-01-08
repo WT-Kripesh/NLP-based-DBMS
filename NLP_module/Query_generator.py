@@ -1,7 +1,9 @@
-from .database_structure import find_total_information_of_selected_db
-from .database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
-from .database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
-from .database_connection import db_config
+# import sys
+# sys.path.insert(0,'/Users/kripesh/Developer/Projects/NLP-based-DBMS')
+from database_structure import find_total_information_of_selected_db
+from database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
+from database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
+from database_connection import db_config
 import re
 
 dict_of_synonyms = {
@@ -534,10 +536,11 @@ def find_ordered_by_clause(list_of_column_in_selected_table, tokens):
 
 
 
-def get_query(NL_query, cursor):
+def get_query(NL_query, cursor,selected_db=None):
     NL_query = NL_query.lower()
     tokens = custom_unigram_tokenizer(NL_query)
-    selected_db = db_config['database']
+    if selected_db == None:
+        selected_db = db_config['database']
     selected_db_info = find_total_information_of_selected_db(selected_db, cursor)   
     list_of_tables = list( selected_db_info.keys())
     from_clause = find_from_clause(tokens, list_of_tables)
